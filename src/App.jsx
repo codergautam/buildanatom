@@ -1,35 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import AtomViewer from './components/AtomViewer';
+import AtomDetails from './components/AtomDetails';
+import ControlPanel from './components/ControlPanel';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [protons, setProtons] = useState(0);
+  const [neutrons, setNeutrons] = useState(0);
+  const [electrons, setElectrons] = useState(0);
+
+  // Function to update protons, neutrons, and electrons
+  const updateParticles = (particle, amount) => {
+    if (particle === 'protons') {
+      setProtons(protons + amount);
+    } else if (particle === 'neutrons') {
+      setNeutrons(neutrons + amount);
+    } else if (particle === 'electrons') {
+      setElectrons(electrons + amount);
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div>
+      <ControlPanel updateParticles={updateParticles} />
+      <AtomViewer protons={protons} neutrons={neutrons} electrons={electrons} />
+      <AtomDetails protons={protons} neutrons={neutrons} electrons={electrons} />
+    </div>
+  );
 }
 
-export default App
+export default App;
