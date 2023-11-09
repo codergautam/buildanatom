@@ -10,14 +10,14 @@ function App() {
 
   // Function to update protons, neutrons, and electrons
   const updateParticles = (particle, amount) => {
-    if (particle === 'protons') {
-      setProtons(protons + amount);
-    } else if (particle === 'neutrons') {
-      setNeutrons(neutrons + amount);
-    } else if (particle === 'electrons') {
-      setElectrons(electrons + amount);
-    }
-  };
+  if (particle === 'protons') {
+    setProtons((prevProtons) => Math.max(0, prevProtons + amount));
+  } else if (particle === 'neutrons') {
+    setNeutrons((prevNeutrons) => Math.max(0, prevNeutrons + amount));
+  } else if (particle === 'electrons') {
+    setElectrons((prevElectrons) => Math.max(0, prevElectrons + amount));
+  }
+};
 
   return (
     <div>

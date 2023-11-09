@@ -1,5 +1,5 @@
 import { Canvas } from '@react-three/fiber';
-import { Suspense } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { Sphere, Torus } from '@react-three/drei';
 import { OrbitControls } from '@react-three/drei';
 
@@ -24,7 +24,7 @@ const ElectronShell = ({ shellIndex, electronCount }) => {
         position={[radius * Math.cos(angle), radius * Math.sin(angle), 0]}
         args={[0.15, 32, 32]} // Increased electron size for better visibility
       >
-        <meshStandardMaterial color="#0000FF" /> {/* Vibrant blue for electron */}
+        <meshStandardMaterial color="blue" /> {/* Blue for electron */}
       </Sphere>
     );
   }
@@ -39,9 +39,36 @@ const ElectronShell = ({ shellIndex, electronCount }) => {
   );
 };
 
+const constructNucleus = (protons, neutrons) => {
+  const particles = [];
+  let i = 0;
+
+  // Deterministic placement of protons and neutrons
+  while (i < protons) {
+    particles.push({ color: 'red', type: 'proton' });
+    i++;
+  }
+
+  i = 0; // Reset for neutrons
+  while (i < neutrons) {
+    particles.push({ color: 'black', type: 'neutron' });
+    i++;
+  }
+
+  return particles;
+};
 
 const AtomViewer = ({ protons, neutrons, electrons }) => {
+  const [enableSpin, setEnableSpin] = useState(true);
   const nucleusSize = Math.cbrt(protons + neutrons) * 0.5;
+  const orbitControlsRef = useRef();
+  const nucleusParticles = constructNucleus(protons, neutrons);
+
+  useEffect(() => {
+    if (!enableSpin && orbitControlsRef.current) {
+      orbitControlsRef.current.reset();
+    }
+  }, [enableSpin])
 
   const shells = [];
   let e = electrons;
@@ -53,29 +80,39 @@ const AtomViewer = ({ protons, neutrons, electrons }) => {
   }
 
   return (
-    <Canvas camera={{ position: [0, 0, 20], fov: 75 }}>
-      <ambientLight intensity={1} />
-      <pointLight position={[10, 10, 10]} intensity={1.5} />
-      <OrbitControls />
-      <Suspense fallback={null}>
-        {/* Nucleus */}
-        {[...Array(protons + neutrons)].map((_, i) => {
-          // Ensure that random values do not result in positions outside the nucleusSize
-          const getPosition = () => (Math.random() - 0.5) * nucleusSize * 2;
-          return (
-            <NucleusParticle
-  key={`nucleus-particle-${i}`}
-  position={[getPosition(), getPosition(), getPosition()]}
-  color={i < protons ? 'red' : 'grey'} // Use 'red' for protons and 'grey' for neutrons
-/>
-          );
-        })}
-        {/* Electron Shells */}
-        {shells.map((shell, i) => (
-          <ElectronShell key={`shell-${i}`} shellIndex={shell.shellIndex} electronCount={shell.electronCount} />
-        ))}
-      </Suspense>
-    </Canvas>
+    <>
+      <button onClick={() => setEnableSpin(!enableSpin)}>
+        {enableSpin ? 'Disable' : 'Enable'} 3D
+      </button>
+      <Canvas camera={{ position: [0, 0, 20], fov: 20 }}>
+        <ambientLight intensity={1} />
+        <pointLight position={[10, 10, 10]} intensity={1.5} />
+        <OrbitControls ref={orbitControlsRef} enableRotate={enableSpin} />
+        <Suspense fallback={null}>
+          {/* Nucleus */}
+          {nucleusParticles.map((particle, i) => {
+            // Adjust for better positioning
+            const angle = (Math.PI * 2 / nucleusParticles.length) * i;
+            const distance = nucleusSize * 0.5;
+            const x = distance * Math.cos(angle);
+            const y = distance * Math.sin(angle);
+            const z = i % 2 === 0 ? distance : -distance;
+
+            return (
+              <NucleusParticle
+                key={`nucleus-particle-${i}`}
+                position={[x, y, z]}
+                color={particle.color}
+              />
+            );
+          })}
+          {/* Electron Shells */}
+          {shells.map((shell, i) => (
+            <ElectronShell key={`shell-${i}`} shellIndex={shell.shellIndex} electronCount={shell.electronCount} />
+          ))}
+        </Suspense>
+      </Canvas>
+    </>
   );
 };
 

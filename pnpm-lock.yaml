@@ -1,9 +1,5 @@
 lockfileVersion: '6.0'
 
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
-
 dependencies:
   '@react-three/drei':
     specifier: ^9.88.11
@@ -11,6 +7,12 @@ dependencies:
   '@react-three/fiber':
     specifier: ^8.15.10
     version: 8.15.10(react-dom@18.2.0)(react@18.2.0)(three@0.158.0)
+  periodic-table:
+    specifier: ^0.0.8
+    version: 0.0.8
+  ptable:
+    specifier: ^0.0.3
+    version: 0.0.3
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -946,6 +948,10 @@ packages:
       get-intrinsic: 1.2.2
       is-string: 1.0.7
     dev: true
+
+  /array-miner@0.0.1:
+    resolution: {integrity: sha512-qLc2f0U1+UJRJF0+XWN4Gtye6JZPNYrY3VA4lnE8mhFtxS9oi+RYMHtq/aQdcENvohCSDr38LBWmunSfokfDrg==}
+    dev: false
 
   /array.prototype.flat@1.3.2:
     resolution: {integrity: sha512-djYB+Zx2vLewY8RWlNCUdHjDXs2XOgm602S9E7P/UpHgfeHL00cRiIF+IN/G/aUJ7kGPb6yO/ErDI5V2s8iycA==}
@@ -2306,6 +2312,10 @@ packages:
     resolution: {integrity: sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==}
     dev: true
 
+  /periodic-table@0.0.8:
+    resolution: {integrity: sha512-6UyOC7CwfV+vtNc13/eQ71m+u+A9jrrkYpuTMZqZOxwDpgX6KRtEJVYnMxwS23YdI/VOVzAomrXzcc5iixTuzg==}
+    dev: false
+
   /picocolors@1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
     dev: true
@@ -2410,6 +2420,12 @@ packages:
       loose-envify: 1.4.0
       object-assign: 4.1.1
       react-is: 16.13.1
+
+  /ptable@0.0.3:
+    resolution: {integrity: sha512-i+oCYm89w9ZYchU+7s/HDp/MPMoGBCjVcDtAvG1dzPx1n8qGekra7DJ2rudye2QVlQyab+rbLqDJuACW5B2nNg==}
+    dependencies:
+      array-miner: 0.0.1
+    dev: false
 
   /punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
@@ -3080,3 +3096,7 @@ packages:
     dependencies:
       react: 18.2.0
     dev: false
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
